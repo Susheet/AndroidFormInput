@@ -53,8 +53,10 @@ class MainActivity : AppCompatActivity() {
             if(username.isEmpty()){
                 eTName.error = "Name required"
                 return@setOnClickListener
-            }else if(email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            }
+            if(!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                 etEmail.error = "Email required in correct format"
+                Toast.makeText(this,"Email format empty or not correct",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
