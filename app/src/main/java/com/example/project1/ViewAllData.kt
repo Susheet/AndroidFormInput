@@ -1,5 +1,6 @@
 package com.example.project1
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,9 +29,13 @@ class ViewAllData : AppCompatActivity() {
 //        mviewModel = ViewModelProvider(this).get(DataViewModel::class.java)
         mviewModel.allData.observe(this, Observer {list ->
             list?.let{
-                adapter.updateList(it)
+                adapter.updateList(it as ArrayList<Data>)
             }
         })
+
+        fbtn.setOnClickListener{
+            startActivity(Intent(this, MainActivity::class.java))
+        }
 
 
     }

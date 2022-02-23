@@ -10,6 +10,13 @@ class DataRepository(private val dataDao: DataDao) {
         dataDao.insert(data)
     }
 
+    fun update(data: Data){
+        dataDao.update(data)
+    }
+
+    fun get(email: String){
+        dataDao.get(email)
+    }
 //    suspend fun delete(data: Data){
 //        dataDao.delete(data)
 //    }

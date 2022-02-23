@@ -10,7 +10,7 @@ import org.w3c.dom.Text
 
 class DataListAdapter(private val context: Context): RecyclerView.Adapter<DataViewHolder>() {
 
-    var allData = emptyList<Data>()
+    var allData = ArrayList<Data>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
         val view = DataViewHolder(LayoutInflater.from(context).inflate(R.layout.data_item,parent,false))
@@ -30,8 +30,8 @@ class DataListAdapter(private val context: Context): RecyclerView.Adapter<DataVi
        return allData.size
     }
 
-    fun updateList(data: List<Data>){
-        //allData.clear()
+    fun updateList(data: ArrayList<Data>){
+        allData.clear()
         this.allData = data
 
         notifyDataSetChanged()

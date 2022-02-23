@@ -21,4 +21,12 @@ class DataViewModel(application: Application) : AndroidViewModel(application) {
     fun insertData(data: Data) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(data)
     }
+
+    fun updateData(data: Data) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(data)
+    }
+
+    fun get(email: String) = viewModelScope.launch(Dispatchers.IO) {
+        repository.get(email)
+    }
 }

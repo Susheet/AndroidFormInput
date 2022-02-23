@@ -36,27 +36,32 @@ class MainActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+
             override fun onNothingSelected(p0: AdapterView<*>?) {
                 //can leave blank as an option is always there
             }
         }
 
         //mviewModel = ViewModelProvider(this).get(DataViewModel::class.java)
-        mviewModel = ViewModelProvider(this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)).get(DataViewModel::class.java)
+        mviewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+        ).get(DataViewModel::class.java)
+
+        val dao = DataDatabase.getDatabase(application).getDataDao()
 
         btnSubmit.setOnClickListener {
 
             val username = eTName.text.toString().trim()
             val email = etEmail.text.toString().trim()
 
-            if(username.isEmpty()){
+            if (username.isEmpty()) {
                 eTName.error = "Name required"
                 return@setOnClickListener
             }
-            if(!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            if (!email.isEmpty() && !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 etEmail.error = "Email required in correct format"
-                Toast.makeText(this,"Email format empty or not correct",Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Email format empty or not correct", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -74,13 +79,30 @@ class MainActivity : AppCompatActivity() {
             }
 
             var jobstatus = "PartTime"
-            val status = sw.showText.toString()
-            if(status == "true"){
+            if (sw.isChecked) {
                 jobstatus = "FullTime"
             }
 
-            val data = Data(username,email,category,selectedItem,jobstatus)
-            mviewModel.insertData(data)
+            var data = Data(0, username, email, category, selectedItem, jobstatus)
+            println("this is ${data.username}")
+
+            val exists = dao.get(email)
+
+            println("this is $exists")
+
+            if (exists == 1) {
+                //mviewModel.updateData(data)
+                val id = dao.getId(email)
+                data = Data(id, username, email, category, selectedItem, jobstatus)
+                dao.update(data)
+
+                Toast.makeText(this, "email already exists", Toast.LENGTH_LONG).show()
+            } else {
+                dao.insert(data)
+                //mviewModel.insertData(data)
+            }
+
+//            mviewModel.insertData(data)
 
             Toast.makeText(this, "Data submitted successfully", Toast.LENGTH_LONG).show()
         }
