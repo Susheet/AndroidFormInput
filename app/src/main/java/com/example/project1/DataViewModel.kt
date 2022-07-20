@@ -9,24 +9,24 @@ import kotlinx.coroutines.launch
 
 class DataViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository: DataRepository
+
+    val dao = DataDatabase.getDatabase(application).getDataDao()
     val allData: LiveData<List<Data>>
 
     init {
-        val dao = DataDatabase.getDatabase(application).getDataDao()
-        repository = DataRepository(dao)
-        allData = repository.allData
+        allData = dao.getAllData()P
     }
 
     fun insertData(data: Data) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(data)
+        dao.insert(data)
+
     }
 
     fun updateData(data: Data) = viewModelScope.launch(Dispatchers.IO) {
-        repository.update(data)
+        dao.update(data)
     }
 
     fun get(email: String) = viewModelScope.launch(Dispatchers.IO) {
-        repository.get(email)
+        dao.getId(email)
     }
 }

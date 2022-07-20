@@ -91,15 +91,15 @@ class MainActivity : AppCompatActivity() {
             println("this is $exists")
 
             if (exists == 1) {
-                //mviewModel.updateData(data)
                 val id = dao.getId(email)
                 data = Data(id, username, email, category, selectedItem, jobstatus)
-                dao.update(data)
+
+                mviewModel.updateData(data)
 
                 Toast.makeText(this, "email already exists", Toast.LENGTH_LONG).show()
             } else {
-                dao.insert(data)
-                //mviewModel.insertData(data)
+
+                mviewModel.insertData(data)
             }
 
 //            mviewModel.insertData(data)
